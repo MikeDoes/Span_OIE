@@ -7,29 +7,39 @@ Created on Thu Nov 15 21:05:15 2018
 
 from oieReader import OieReader
 from extraction import Extraction
+import json
 
 class GeneralReader(OieReader):
+    
     
     def __init__(self):
         self.name = 'General'
     
+
     def read(self, fn):
         d = {}
-        with open(fn) as fin:
-            for line in fin:
-                data = line.strip().split('\t')
-                if len(data) >= 4:
-                    arg1 = data[3]
-                    rel = data[2]
-                    arg_else = data[4:]
-                    confidence = data[1]
-                    text = data[0]
+        with open(fn) as f:
+            data = json.load(f)
+        
+        for i, _ in enumerate(data['text']):
+            for extraction in data['extraction']:
+                
+                head = extraction['head']
+                # Rel is the relation
+                rel = extraction['relation']
+                tails = extraction['tails'] #[] 
+                confidence = 1
+                text = data['text'][i]
                     
-                    curExtraction = Extraction(pred = rel, head_pred_index=-1, sent = text, confidence = float(confidence))
-                    curExtraction.addArg(arg1)
-                    for arg in arg_else:
-                        curExtraction.addArg(arg)
-                    d[text] = d.get(text, []) + [curExtraction]
+                curExtraction = Extraction(pred = rel, head_pred_index=-1, sent = text, confidence = float(confidence))
+                # This is the head?
+                curExtraction.addArg(head)
+                
+                # These are the tails
+                for tail in tails:
+                    curExtraction.addArg(tail)
+                d[text] = d.get(text, []) + [curExtraction]
+
         self.oie = d
         
 if __name__ == "__main__":

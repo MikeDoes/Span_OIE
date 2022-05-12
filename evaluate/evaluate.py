@@ -20,6 +20,7 @@ from generalReader import GeneralReader
 from goldReader import GoldReader
 from gold_relabel import Relabel_GoldReader
 from matcher import Matcher
+import json
 from operator import itemgetter
 
 class Benchmark:
@@ -197,7 +198,7 @@ if __name__ == '__main__':
     
     b = Benchmark(gold_fn) 
     s_fn = in_path
-    p = GeneralReader()
+
     other_p = GeneralReader()
     other_p.read(s_fn)
     b.compare(predicted = other_p.oie,
