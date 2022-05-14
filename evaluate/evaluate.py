@@ -15,7 +15,7 @@ import logging
 import sys
 logging.basicConfig(level = logging.INFO)
 
-from generalReader import GeneralReader
+from generalReader import read_predicted
 
 from goldReader import GoldReader
 from gold_relabel import Relabel_GoldReader
@@ -199,9 +199,8 @@ if __name__ == '__main__':
     b = Benchmark(gold_fn) 
     s_fn = in_path
 
-    other_p = GeneralReader()
-    other_p.read(s_fn)
-    b.compare(predicted = other_p.oie,
+    predictions = read_predicted(s_fn)
+    b.compare(predicted = predictions,
               matchingFunc = matchingFunc,
               output_fn = out_path,
               error_file = error_fn)
