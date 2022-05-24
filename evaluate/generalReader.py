@@ -31,7 +31,6 @@ def read_predicted(fn):
             # These are the tails
             for tail in tails:
                 curExtraction.addArg(tail)
-                break
 
             d[text] = d.get(text, []) + [curExtraction]
         
